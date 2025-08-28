@@ -4,9 +4,9 @@ import Wallet from "flows/home/wallet";
 import Login from "flows/login";
 import LoginUsername from "flows/login/username";
 import useAuthMiddleware from "middlware/auth.middleware";
-import { createBrowserRouter, redirect } from "react-router";
+import { createHashRouter, redirect } from "react-router";
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   [
     {
       path: "app",
@@ -41,7 +41,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/finup",
+    basename: import.meta.env.DEV ? "/" : "/finup",
   },
 );
 
