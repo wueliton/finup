@@ -41,7 +41,7 @@ const router = createHashRouter(
     },
   ],
   {
-    basename: import.meta.env.DEV ? "/" : "/finup",
+    basename: "/",
   },
 );
 
