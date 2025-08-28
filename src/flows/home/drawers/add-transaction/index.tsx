@@ -1,6 +1,7 @@
 import { Button } from "@components";
 import Dialog from "components/Dialog";
 import type { DialogComponentProps } from "components/Dialog/hooks/useCreateDialog/types";
+import FormDatepicker from "components/form/FormDatepicker";
 import FormInput from "components/form/FormInput";
 import useAddTransaction from "./hooks/useAddTransaction";
 
@@ -28,6 +29,7 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
           textPrefix={<span className="text-black/60">R$</span>}
           maxLength={15}
         />
+        <FormDatepicker control={control} name="transactionAt" label="Data" />
       </form>
       <Dialog.Actions>
         <Button onClick={onClose} variant="secondary">

@@ -21,7 +21,7 @@ function Input(
   ref: React.Ref<HTMLInputElement>,
 ) {
   const { container, content, input, labelContainer } = inputStyles();
-  const { value, onChange } = useMask(mask);
+  const { value, onChange } = useMask(mask, inputProps.value);
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
   const hintId = `${id}-hint`;

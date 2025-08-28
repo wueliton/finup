@@ -1,29 +1,42 @@
-import { useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import Masks from "./masks";
 import type { MaskOptions } from "./types";
 
-function useMask(mask?: MaskOptions) {
-  const [valueState, setValueState] = useState("");
+function useMask(
+  mask?: MaskOptions,
+  value?: string | number | readonly string[],
+) {
+  const [valueState, setValueState] = useState(value ?? "");
+
+  const changeValue = useCallback(
+    (value?: string | number | readonly string[]) => {
+      const emptyMask = !mask;
+
+      if (!value) {
+        setValueState("");
+        return;
+      }
+
+      if (emptyMask) {
+        setValueState(value);
+        return;
+      }
+
+      const formatted = Masks[mask](String(value));
+
+      setValueState(String(formatted));
+    },
+    [mask],
+  );
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    const emptyMask = !mask;
-
-    if (!value) {
-      setValueState("");
-      return;
-    }
-
-    if (emptyMask) {
-      setValueState(e.target.value);
-      return;
-    }
-
-    const formatted = Masks[mask](value);
-
-    e.target.value = String(formatted);
-    setValueState(String(formatted));
+    changeValue(value);
   }
+
+  useEffect(() => {
+    changeValue(value);
+  }, [value, changeValue]);
 
   return {
     value: valueState,
