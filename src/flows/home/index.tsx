@@ -14,9 +14,9 @@ function Home() {
   }
 
   return (
-    <div className="flex h-full w-full">
-      <div className="p-md gap-md flex h-full flex-col items-center">
-        <p>F</p>
+    <div className="flex h-full w-full flex-col-reverse lg:flex-row">
+      <div className="lg:p-md gap-md bottom-none sticky flex h-[5.4rem] shrink-0 items-center max-lg:justify-center max-lg:bg-white max-lg:shadow-sm lg:h-auto lg:flex-col">
+        <p className="hidden lg:block">F</p>
 
         <Menu key="aside">
           <Menu.Button
@@ -40,7 +40,7 @@ function Home() {
         </Menu>
         <div className="mt-auto"></div>
       </div>
-      <main className="pr-md flex w-full flex-col">
+      <main className="px-sm lg:pr-md flex h-full w-full flex-auto flex-col">
         <div className="py-md flex justify-end">
           <Button aria-label="Adicionar entrada" onClick={handleAdd}>
             <Icon name="AddCircle" size={16} /> Adicionar

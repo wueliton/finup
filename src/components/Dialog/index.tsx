@@ -1,6 +1,7 @@
 import Animated from "components/Animated";
 import useFocusTrap from "hooks/useFocusTrap";
 import DialogActions from "./components/Actions";
+import DialogBody from "./components/Body";
 import DialogHeader from "./components/Header";
 import { dialogStyles } from "./styles";
 import type { DialogProps } from "./types";
@@ -22,7 +23,7 @@ function Dialog({ children, isOpen }: DialogProps) {
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"
         className={content()}
-        animation="pop"
+        animation="modal"
         ref={containerRef}
         show={isOpen}
       >
@@ -33,6 +34,7 @@ function Dialog({ children, isOpen }: DialogProps) {
 }
 
 Dialog.Header = DialogHeader;
+Dialog.Body = DialogBody;
 Dialog.Actions = DialogActions;
 
 export default Dialog;

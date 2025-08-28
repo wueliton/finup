@@ -15,22 +15,24 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
         title="Nova Transação"
         subtitle="Adicione um novo lançamento"
       />
-      <form
-        onSubmit={onSubmit}
-        id="add-transaction-form"
-        className="gap-sm flex flex-col"
-      >
-        <FormInput control={control} name="description" label="Descrição" />
-        <FormInput
-          control={control}
-          name="value"
-          label="Valor"
-          mask="currency"
-          textPrefix={<span className="text-black/60">R$</span>}
-          maxLength={15}
-        />
-        <FormDatepicker control={control} name="transactionAt" label="Data" />
-      </form>
+      <Dialog.Body>
+        <form
+          onSubmit={onSubmit}
+          id="add-transaction-form"
+          className="gap-sm flex flex-col"
+        >
+          <FormInput control={control} name="description" label="Descrição" />
+          <FormInput
+            control={control}
+            name="value"
+            label="Valor"
+            mask="currency"
+            textPrefix={<span className="text-black/60">R$</span>}
+            maxLength={15}
+          />
+          <FormDatepicker control={control} name="transactionAt" label="Data" />
+        </form>
+      </Dialog.Body>
       <Dialog.Actions>
         <Button onClick={onClose} variant="secondary">
           Cancelar

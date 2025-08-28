@@ -65,6 +65,8 @@ html, body, #root {
     --animate-pop-down: pop-down 0.2s ease-in-out forwards;
     --animate-fade-in: fade-in 0.2s ease-in-out forwards;
     --animate-fade-out: fade-out 0.2s ease-in-out forwards;
+    --animate-slide-up: slide-up 0.3s ease-in-out forwards;
+    --animate-slide-down: slide-down 0.3s ease-in-out forwards;
 
     @keyframes zoom-in {
         0% {
@@ -125,6 +127,24 @@ html, body, #root {
         }
         100% {
             opacity: 1;
+        }
+    }
+
+    @keyframes slide-up {
+        0% {
+            transform: translateY(100%);
+        }
+        100% {
+            transform: translateY(0%);
+        }
+    }
+
+    @keyframes slide-down {
+        0% {
+            transform: translateY(0%);
+        }
+        100% {
+            transform: translateY(100%);
         }
     }
 }

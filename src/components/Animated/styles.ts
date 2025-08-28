@@ -7,6 +7,7 @@ const animatedStyles = tv({
       zoom: {},
       pop: {},
       fade: {},
+      modal: {},
     },
     isMounted: {
       true: "",
@@ -43,6 +44,17 @@ const animatedStyles = tv({
       animation: "fade",
       isMounted: true,
       className: "motion-safe:animate-fade-out",
+    },
+    {
+      animation: "modal",
+      isMounted: false,
+      className:
+        "motion-safe:animate-slide-down lg:motion-safe:animate-pop-down",
+    },
+    {
+      animation: "modal",
+      isMounted: true,
+      className: "motion-safe:animate-slide-up lg:motion-safe:animate-pop-up",
     },
   ],
 });

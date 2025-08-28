@@ -5,7 +5,7 @@ import { memo } from "react";
 function DashboardContent() {
   return (
     <>
-      <div className="gap-md space-y-md md:columns-2">
+      <div className="gap-md space-y-md lg:columns-2">
         <BalanceCard />
         <div className="p-md gap-md flex break-inside-avoid flex-col rounded-sm border border-gray-200">
           <p className="text-sm text-black/60">Por Categoria</p>

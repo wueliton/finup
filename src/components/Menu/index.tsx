@@ -4,7 +4,7 @@ import MenuButton from "./Button";
 function Menu({ children }: PropsWithChildren) {
   return (
     <nav aria-label="Menu principal">
-      <ul className="gap-sm flex flex-col">{children}</ul>
+      <ul className="gap-sm flex lg:flex-col">{children}</ul>
     </nav>
   );
 }
