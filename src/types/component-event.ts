@@ -1,4 +1,4 @@
-type ComponentEvent<Value> = {
+type ComponentEvent<Value = unknown> = {
   target: {
     value: Value | null | undefined;
   };

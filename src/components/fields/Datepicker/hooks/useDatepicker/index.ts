@@ -2,6 +2,7 @@ import { addMonths, addYears, format, getYear, isValid, parse } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import useFocusTrap from "hooks/useFocusTrap";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { ComponentEvent } from "types/component-event";
 import type { SlideContentHandles } from "../../../../SlideContent/types";
 import { CalendarSelectionEnum } from "../../contants";
 import type { UseDatepickerProps } from "./types";
@@ -174,8 +175,8 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     return isValidDate ? date : null;
   }
 
-  function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setInpuValueState(event.target.value);
+  function handleOnChange(event: ComponentEvent) {
+    setInpuValueState(event.target.value as string);
   }
 
   function handleOnBlur(event: React.FocusEvent<HTMLInputElement, Element>) {

@@ -6,7 +6,7 @@ import FieldHint from "../FieldHint";
 import { inputStyles } from "./styles";
 import type { InputProps } from "./types";
 
-function Input<Value>(
+function Input(
   {
     prefix,
     textPrefix,
@@ -17,7 +17,7 @@ function Input<Value>(
     hideInput,
     error,
     ...inputProps
-  }: InputProps<Value>,
+  }: InputProps,
   ref: React.Ref<HTMLInputElement>,
 ) {
   const { container, content, input, labelContainer } = inputStyles();
@@ -40,7 +40,7 @@ function Input<Value>(
 
     inputProps.onChange?.({
       target: {
-        value: formattedValue as Value,
+        value: formattedValue,
       },
     });
   }
