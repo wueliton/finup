@@ -21,7 +21,10 @@ function Input(
   ref: React.Ref<HTMLInputElement>,
 ) {
   const { container, content, input, labelContainer } = inputStyles();
-  const { value, onChange } = useMask(mask, inputProps.value);
+  const { value, isNumber, inputMode, onChange } = useMask(
+    mask,
+    inputProps.value,
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
   const hintId = `${id}-hint`;
@@ -32,7 +35,6 @@ function Input(
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     onChange(event);
 
-    const isNumber = mask === "currency";
     const value = event.target.value;
     const parsedValue = isNumber && !value ? undefined : value;
     const formattedValue =
@@ -86,6 +88,7 @@ function Input(
             onChange={handleOnChange}
             ref={addInputRef}
             value={value}
+            inputMode={inputMode}
           />
           <label htmlFor={inputId} className={labelContainer()}>
             {label}

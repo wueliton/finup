@@ -1,3 +1,4 @@
+import type { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import type Masks from "./masks";
 
 type ObtainMethods<T> = {
@@ -7,4 +8,9 @@ type ObtainMethods<T> = {
 
 type MaskOptions = ObtainMethods<typeof Masks>;
 
-export type { MaskOptions };
+type InputModeOptions = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>["inputMode"];
+
+export type { InputModeOptions, MaskOptions };

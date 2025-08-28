@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import Masks from "./masks";
-import type { MaskOptions } from "./types";
+import type { InputModeOptions, MaskOptions } from "./types";
 
 function useMask(
   mask?: MaskOptions,
   value?: string | number | readonly string[],
 ) {
   const [valueState, setValueState] = useState(value ?? "");
+  const isNumber = mask === "currency";
+  const inputMode: InputModeOptions = isNumber ? "numeric" : "text";
 
   const changeValue = useCallback(
     (value?: string | number | readonly string[]) => {
@@ -40,6 +42,8 @@ function useMask(
 
   return {
     value: valueState,
+    isNumber,
+    inputMode,
     onChange,
   };
 }
