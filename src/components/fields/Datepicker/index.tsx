@@ -27,6 +27,7 @@ function Datepicker({
     showSelectMonthOrYear,
     showYearSelection,
     inputValue,
+    isMobile,
     handleOpenCalendar,
     handleSelectionType,
     handlePrevious,
@@ -57,6 +58,7 @@ function Datepicker({
         value={inputValue}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
+        readOnly={isMobile}
       />
       <FloatMenu
         isOpen={calendar.isOpen}

@@ -7,7 +7,7 @@ function DashboardContent() {
     <>
       <div className="gap-md space-y-md lg:columns-2">
         <BalanceCard />
-        <div className="p-md gap-md flex break-inside-avoid flex-col rounded-sm border border-gray-200">
+        <div className="p-sm md:p-md gap-md flex break-inside-avoid flex-col rounded-sm border border-gray-200">
           <p className="text-sm text-black/60">Por Categoria</p>
           <div className="gap-x-md gap-y-xs grid grid-cols-[min-content_1fr] items-center">
             Alimentação
@@ -20,7 +20,7 @@ function DashboardContent() {
             <div className="h-sm w-full rounded-full bg-gray-100"></div>
           </div>
         </div>
-        <div className="p-md gap-md flex break-inside-avoid flex-col rounded-sm border border-gray-200">
+        <div className="p-sm md:p-md gap-md flex break-inside-avoid flex-col rounded-sm border border-gray-200">
           <p className="text-sm text-black/60">Últimos lançamentos</p>
           <div className="gap-sm flex flex-col">
             <StatementLine

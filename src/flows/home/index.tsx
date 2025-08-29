@@ -46,7 +46,7 @@ function Home() {
             <Icon name="AddCircle" size={16} /> Adicionar
           </Button>
         </div>
-        <div className="p-md w-full rounded-md bg-white">
+        <div className="p-sm md:p-md w-full rounded-md bg-white">
           <Outlet context={location} />
         </div>
       </main>

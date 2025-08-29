@@ -1,6 +1,7 @@
 import { addMonths, addYears, format, getYear, isValid, parse } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import useFocusTrap from "hooks/useFocusTrap";
+import useIsMobile from "hooks/useIsMobile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ComponentEvent } from "types/component-event";
 import type { SlideContentHandles } from "../../../../SlideContent/types";
@@ -17,6 +18,7 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     direction: 1,
   });
   const { containerRef } = useFocusTrap<HTMLDivElement>(calendarState.isOpen);
+  const { isMobile } = useIsMobile();
   const showSelectMonthOrYear =
     calendarState.selection !== CalendarSelectionEnum.DAY;
   const showYearSelection =
@@ -227,6 +229,7 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     showSelectMonthOrYear,
     showYearSelection,
     inputValue: inputValueState,
+    isMobile,
     handleOpenCalendar,
     handleSelectionType,
     handlePrevious,

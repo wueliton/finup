@@ -3,7 +3,7 @@ import Chip from "components/Chip";
 
 function BalanceCard() {
   return (
-    <div className="gap-sm p-md flex flex-col rounded-sm bg-blue-600 shadow">
+    <div className="gap-sm p-sm md:p-md flex flex-col rounded-sm bg-blue-600 shadow">
       <p className="text-sm text-white">Saldo Total</p>
       <p className="text-3xl font-semibold text-white">R$ 12.480,25</p>
       <div className="gap-xs flex items-start">

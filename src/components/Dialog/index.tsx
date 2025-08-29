@@ -6,7 +6,7 @@ import DialogHeader from "./components/Header";
 import { dialogStyles } from "./styles";
 import type { DialogProps } from "./types";
 
-function Dialog({ children, isOpen }: DialogProps) {
+function Dialog({ children, isOpen, onClose }: DialogProps) {
   const { overlayContainer, content } = dialogStyles();
   const { containerRef } = useFocusTrap<HTMLDivElement>(isOpen);
 
@@ -16,6 +16,7 @@ function Dialog({ children, isOpen }: DialogProps) {
         show={isOpen}
         animation="fade"
         className={overlayContainer()}
+        onClick={onClose}
       ></Animated>
       <Animated
         role="dialog"

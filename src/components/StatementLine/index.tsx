@@ -33,14 +33,16 @@ function StatementLine({
           <Icon name={typeIcon} size={12} className="text-white" />
         </span>
       </span>
-      <div className={contentContainer()}>
-        <p>{title}</p>
-        <p className={subtitleContainer()}>
-          {updatedAt} • {category}
-        </p>
-      </div>
-      <div>
-        <p className={amountContainer()}>{formatCurrency(amount)}</p>
+      <div className="gap-sm flex flex-1 flex-col md:flex-row md:items-center md:justify-between">
+        <div className={contentContainer()}>
+          <p>{title}</p>
+          <p className={subtitleContainer()}>
+            {updatedAt} • {category}
+          </p>
+        </div>
+        <div>
+          <p className={amountContainer()}>{formatCurrency(amount)}</p>
+        </div>
       </div>
     </Link>
   );
