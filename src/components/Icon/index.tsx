@@ -4,7 +4,7 @@ import type { IconProps } from "./types";
 
 function Icon({ name, size = 24, className, weight }: IconProps) {
   const DynamicIcon = lazy(() =>
-    import(`@solar-icons/react`).then((item) => ({
+    import(`@solar-icons/react/ssr`).then((item) => ({
       default: item[name] as Icon,
     })),
   ) as FC<{

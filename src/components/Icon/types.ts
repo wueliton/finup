@@ -1,4 +1,4 @@
-import * as SolarIcons from "@solar-icons/react";
+import * as SolarIcons from "@solar-icons/react/ssr";
 
 type IconNames = keyof typeof SolarIcons;
 
