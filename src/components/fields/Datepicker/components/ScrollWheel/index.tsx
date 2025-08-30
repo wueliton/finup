@@ -18,6 +18,7 @@ function ScrollWheel({
     selectedDay,
     selectedMonth,
     selectedYear,
+    containerRef,
     handleChange,
     handleSelect,
   } = useScrollWheel({
@@ -36,6 +37,7 @@ function ScrollWheel({
         className="bottom-none left-none fixed z-20 w-full rounded-t-sm bg-white"
         animation="modal"
         show={isOpen}
+        ref={containerRef}
       >
         <div className="flex justify-between">
           <Button variant="ghost" type="button" onClick={onCancel}>

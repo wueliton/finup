@@ -15,11 +15,13 @@ import {
   startOfYear,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import useFocusTrap from "hooks/useFocusTrap";
 import { useMemo, useState } from "react";
 import type { useScrollWheelProps } from "./types";
 
 function useScrollWheel({ initialDate, onSelect }: useScrollWheelProps) {
   const [selectedDate, setSelectedDate] = useState(initialDate ?? new Date());
+  const { containerRef } = useFocusTrap<HTMLDivElement>(true);
   const { monthList, yearList } = useMemo(() => {
     const today = new Date();
     return {
@@ -70,6 +72,7 @@ function useScrollWheel({ initialDate, onSelect }: useScrollWheelProps) {
     selectedDay,
     selectedMonth,
     selectedYear,
+    containerRef,
     handleChange,
     handleSelect,
   };

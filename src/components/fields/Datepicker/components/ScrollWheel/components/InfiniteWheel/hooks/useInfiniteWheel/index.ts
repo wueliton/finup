@@ -25,10 +25,16 @@ function useInfiniteWheel({
   });
   const listLength = itens.length;
   const listItens = useMemo(() => {
-    return Array.from({ length: LIST_LENGTH }, (_, i) => ({
-      text: itens[Math.abs(i + selectedItem - 22) % listLength],
-      key: `${name}-${selectedItem + i}`,
-    }));
+    return Array.from({ length: LIST_LENGTH }, (_, i) => {
+      const isSelected = i === 22;
+      return {
+        text: itens[Math.abs(i + selectedItem - 22) % listLength],
+        key: `${name}-${selectedItem + i}`,
+        scrollTo: i + selectedItem - 22,
+        isSelected,
+        tabIndex: isSelected ? 0 : -1,
+      };
+    });
   }, [selectedItem, itens, name, listLength]);
 
   const listStyle = useMemo(() => {
@@ -113,11 +119,16 @@ function useInfiniteWheel({
     document.addEventListener("touchend", handleTouchEnd);
   }
 
+  function handleOnClick(scrollTo: number) {
+    return () => setClientYState(scrollTo * ELEMENT_HEIGHT);
+  }
+
   return {
     listItens,
     listStyle,
     handleMouseDown,
     handleTouchStart,
+    handleOnClick,
   };
 }
 

@@ -7,13 +7,18 @@ function InfiniteWheel({
   selected,
   onChange,
 }: InfiniteWheelProps) {
-  const { listItens, listStyle, handleMouseDown, handleTouchStart } =
-    useInfiniteWheel({
-      itens,
-      name,
-      selected,
-      onChange,
-    });
+  const {
+    listItens,
+    listStyle,
+    handleMouseDown,
+    handleTouchStart,
+    handleOnClick,
+  } = useInfiniteWheel({
+    itens,
+    name,
+    selected,
+    onChange,
+  });
 
   return (
     <div
@@ -28,8 +33,10 @@ function InfiniteWheel({
         >
           {listItens.map((item) => (
             <div
-              className="flex items-center rounded-sm text-left transition-colors hover:bg-gray-400/40"
+              className="flex items-center rounded-sm text-left ring-0 transition-colors outline-none focus-within:bg-gray-400/40 hover:bg-gray-400/40"
               key={item.key}
+              onClick={handleOnClick(item.scrollTo)}
+              tabIndex={item.tabIndex}
             >
               <span className="first-letter:capitalize">{item.text}</span>
             </div>
