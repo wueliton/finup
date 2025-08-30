@@ -17,9 +17,11 @@ function useInfiniteWheel({
     () => Math.floor(clientYState / ELEMENT_HEIGHT),
     [clientYState],
   );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const disableClickRef = useRef(false);
   const [isDraggingState, setIsDraggingState] = useState(false);
   const startEventRef = useRef({
-    clientY: 0,
+    clientY: -1,
     lastClientY: 0,
     startEvent: 0,
   });
@@ -41,9 +43,7 @@ function useInfiniteWheel({
     return {
       marginTop: `${selectedItem * ELEMENT_HEIGHT - DEFAULT_OFFSET}px`,
       transform: `translate3d(0, ${clientYState * -1 - DEFAULT_OFFSET}px, 0)`,
-      transition: isDraggingState
-        ? ""
-        : "transform 1000ms cubic-bezier(0.19, 1, 0.22, 1)",
+      transition: isDraggingState ? "" : "transform 200ms",
     };
   }, [clientYState, selectedItem, isDraggingState]);
 
@@ -62,6 +62,10 @@ function useInfiniteWheel({
       clientY +
       startEventRef.current.lastClientY;
     setClientYState(offsetY);
+
+    const disableClick = Math.abs(startEventRef.current.clientY - clientY) > 5;
+
+    if (disableClick) disableClickRef.current = true;
   }
 
   function handleEnd(clientY: number) {
@@ -76,6 +80,8 @@ function useInfiniteWheel({
     const selectedItem = Math.round(scrollY / ELEMENT_HEIGHT);
     setClientYState(selectedItem * ELEMENT_HEIGHT);
     onChange?.(selectedItem % listLength);
+
+    setTimeout(() => (disableClickRef.current = false), 100);
   }
 
   function handleMouseMove(event: MouseEvent) {
@@ -86,12 +92,14 @@ function useInfiniteWheel({
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
     event.preventDefault();
+    event.stopPropagation();
 
     handleEnd(event.clientY);
   }
 
   function handleMouseDown(event: React.MouseEvent<HTMLDivElement>) {
     event.preventDefault();
+    event.stopPropagation();
     handleStart(event.clientY);
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
@@ -120,15 +128,39 @@ function useInfiniteWheel({
   }
 
   function handleOnClick(scrollTo: number) {
-    return () => setClientYState(scrollTo * ELEMENT_HEIGHT);
+    return () => {
+      if (disableClickRef.current) return;
+      setClientYState(scrollTo * ELEMENT_HEIGHT);
+    };
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    const ignoreKey = !["ArrowUp", "ArrowDown"].includes(event.key);
+
+    if (ignoreKey) return;
+
+    const isKeyDown = event.key === "ArrowDown";
+    const offset = isKeyDown ? 1 : -1;
+    const nextElement = selectedItem + offset;
+
+    setClientYState(ELEMENT_HEIGHT * nextElement);
+    setTimeout(
+      () =>
+        containerRef.current
+          ?.querySelector<HTMLDivElement>("[tabindex='0']")
+          ?.focus(),
+      1,
+    );
   }
 
   return {
     listItens,
     listStyle,
+    containerRef,
     handleMouseDown,
     handleTouchStart,
     handleOnClick,
+    handleKeyDown,
   };
 }
 

@@ -23,6 +23,7 @@ function ScrollWheel({
     handleSelect,
   } = useScrollWheel({
     initialDate: selectedDate,
+    isOpen,
     onSelect,
   });
 

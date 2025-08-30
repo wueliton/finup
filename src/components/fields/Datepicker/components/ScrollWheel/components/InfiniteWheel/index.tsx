@@ -10,9 +10,11 @@ function InfiniteWheel({
   const {
     listItens,
     listStyle,
+    containerRef,
     handleMouseDown,
     handleTouchStart,
     handleOnClick,
+    handleKeyDown,
   } = useInfiniteWheel({
     itens,
     name,
@@ -25,11 +27,13 @@ function InfiniteWheel({
       className="relative"
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
+      onKeyDown={handleKeyDown}
     >
       <div className="relative top-1/2 h-[16.8rem] -translate-y-1/2 overflow-hidden select-none">
         <div
           className="[&_div]:leading[3.4rem] [&_div]:px-sm relative -top-px [&_div]:h-[3.4rem]"
           style={listStyle}
+          ref={containerRef}
         >
           {listItens.map((item) => (
             <div

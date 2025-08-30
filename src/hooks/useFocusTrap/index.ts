@@ -15,6 +15,7 @@ function useFocusTrap<T extends HTMLElement>(isOpen?: boolean) {
         focusableElementsSelector,
       ) ?? [],
     );
+
     const firstFocusableEl = elements?.at(0);
     const lastFocusableEl = elements?.at(-1);
     const isNotChildOfContainer =
