@@ -7,15 +7,20 @@ function InfiniteWheel({
   selected,
   onChange,
 }: InfiniteWheelProps) {
-  const { listItens, listStyle, handleMouseDown } = useInfiniteWheel({
-    itens,
-    name,
-    selected,
-    onChange,
-  });
+  const { listItens, listStyle, handleMouseDown, handleTouchStart } =
+    useInfiniteWheel({
+      itens,
+      name,
+      selected,
+      onChange,
+    });
 
   return (
-    <div className="relative" onMouseDown={handleMouseDown}>
+    <div
+      className="relative"
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+    >
       <div className="relative top-1/2 h-[16.8rem] -translate-y-1/2 overflow-hidden select-none">
         <div
           className="[&_div]:leading[3.4rem] [&_div]:px-sm relative -top-px [&_div]:h-[3.4rem]"

@@ -41,24 +41,29 @@ function useInfiniteWheel({
     };
   }, [clientYState, selectedItem, isDraggingState]);
 
-  function handleMouseMove(event: MouseEvent) {
-    const clientY =
-      startEventRef.current.clientY -
-      event.clientY +
-      startEventRef.current.lastClientY;
-    setClientYState(clientY);
+  function handleStart(clientY: number) {
+    startEventRef.current = {
+      clientY,
+      lastClientY: clientYState,
+      startEvent: Date.now(),
+    };
+    setIsDraggingState(true);
   }
 
-  function handleMouseUp(event: MouseEvent) {
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", handleMouseUp);
-    event.preventDefault();
+  function handleMove(clientY: number) {
+    const offsetY =
+      startEventRef.current.clientY -
+      clientY +
+      startEventRef.current.lastClientY;
+    setClientYState(offsetY);
+  }
 
+  function handleEnd(clientY: number) {
     setIsDraggingState(false);
 
     const now = Date.now();
     const dt = now - startEventRef.current.startEvent;
-    const dy = startEventRef.current.clientY - event.clientY;
+    const dy = startEventRef.current.clientY - clientY;
     const velocity = dy / dt;
     const scrollY =
       startEventRef.current.lastClientY + dy * (1 + Math.abs(velocity));
@@ -67,22 +72,51 @@ function useInfiniteWheel({
     onChange?.(selectedItem % listLength);
   }
 
-  function handleMouseDown(event: React.MouseEvent<HTMLDivElement>) {
-    startEventRef.current = {
-      clientY: event.clientY,
-      lastClientY: clientYState,
-      startEvent: Date.now(),
-    };
+  function handleMouseMove(event: MouseEvent) {
+    handleMove(event.clientY);
+  }
+
+  function handleMouseUp(event: MouseEvent) {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
     event.preventDefault();
-    setIsDraggingState(true);
+
+    handleEnd(event.clientY);
+  }
+
+  function handleMouseDown(event: React.MouseEvent<HTMLDivElement>) {
+    event.preventDefault();
+    handleStart(event.clientY);
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+  }
+
+  function handleTouchMove(event: TouchEvent) {
+    const touch = event.touches.item(0);
+    handleMove(touch?.clientY || 0);
+  }
+
+  function handleTouchEnd(event: TouchEvent) {
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+
+    const touch = event.changedTouches.item(0);
+    handleEnd(touch?.clientY || 0);
+  }
+
+  function handleTouchStart(event: React.TouchEvent<HTMLDivElement>) {
+    const touch = event.touches.item(0);
+    handleStart(touch.clientY);
+
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
   }
 
   return {
     listItens,
     listStyle,
     handleMouseDown,
+    handleTouchStart,
   };
 }
 
