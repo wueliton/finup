@@ -1,68 +1,23 @@
-import { addMonths, addYears, format, getYear, isValid, parse } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { format, isValid, parse } from "date-fns";
 import useFocusTrap from "hooks/useFocusTrap";
-import useIsMobile from "hooks/useIsMobile";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import useMediaQuery from "hooks/useMediaQuery";
+import { useCallback, useEffect, useState } from "react";
 import type { ComponentEvent } from "types/component-event";
-import type { SlideContentHandles } from "../../../../SlideContent/types";
-import { CalendarSelectionEnum } from "../../contants";
 import type { UseDatepickerProps } from "./types";
 
 function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   const [inputValueState, setInpuValueState] = useState<string>();
   const [selectedState, setSelectedState] = useState<Date | null>();
-  const [calendarState, setCalendarState] = useState({
-    isOpen: false,
-    date: selectedState ?? new Date(),
-    selection: CalendarSelectionEnum.DAY,
-    direction: 1,
-  });
-  const { containerRef } = useFocusTrap<HTMLDivElement>(calendarState.isOpen);
-  const { isMobile } = useIsMobile();
-  const showSelectMonthOrYear =
-    calendarState.selection !== CalendarSelectionEnum.DAY;
-  const showYearSelection =
-    calendarState.selection === CalendarSelectionEnum.YEAR;
-  const pageLabel = useMemo(() => {
-    const selectedType = calendarState.selection;
-    const isDaySelected = selectedType === CalendarSelectionEnum.DAY;
-    const isMonthSelected = selectedType === CalendarSelectionEnum.MONTH;
-    const year = getYear(calendarState.date);
-    const yearPage = Math.floor((year - 1900) / 12);
-    const start = 1900 + yearPage * 12;
-    const end = start + 11;
+  const [isOpenState, setIsOpenState] = useState(false);
+  const { containerRef } = useFocusTrap<HTMLDivElement>(isOpenState);
 
-    if (isDaySelected)
-      return format(calendarState.date, "MMMM y", { locale: ptBR });
-    if (isMonthSelected)
-      return format(calendarState.date, "y", { locale: ptBR });
-    return `${start} - ${end}`;
-  }, [calendarState]);
-  const slidersRef = useRef<(SlideContentHandles | null)[]>([]);
+  const isMobile = useMediaQuery({ maxWidth: 680 });
 
-  const handleSelect = useCallback(
-    (type: CalendarSelectionEnum) => (date: Date) => {
-      setCalendarState((prev) => {
-        const isDay = type === CalendarSelectionEnum.DAY;
-        const isOpen = !isDay;
-        const selection = isDay ? prev.selection : prev.selection - 1;
-
-        if (isDay) {
-          setSelectedState(date);
-          setInpuValueState(format(date, "dd/MM/y"));
-          containerRef.current?.querySelector("input")?.focus();
-        }
-
-        return {
-          ...prev,
-          isOpen,
-          date,
-          selection,
-        };
-      });
-    },
-    [],
-  );
+  function handleSelect(date: Date) {
+    setSelectedState(date);
+    setInpuValueState(format(date, "dd/MM/y"));
+    handleOnClose();
+  }
 
   const handleOnChangeDispatch = useCallback(
     (date?: Date | null) => {
@@ -74,100 +29,6 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     },
     [onChange],
   );
-
-  const handlePageChange = useCallback(
-    (type: CalendarSelectionEnum) => (page: number) => {
-      const sumValue = type === CalendarSelectionEnum.YEAR ? 12 : 1;
-      const dateAmount = sumValue * page;
-      const manageFn =
-        type === CalendarSelectionEnum.DAY
-          ? addMonths
-          : type === CalendarSelectionEnum.MONTH
-            ? addYears
-            : addYears;
-
-      setCalendarState((prev) => ({
-        ...prev,
-        date: manageFn(prev.date, dateAmount),
-      }));
-    },
-    [],
-  );
-
-  const handleAddRef = useCallback((index: CalendarSelectionEnum) => {
-    return (el: SlideContentHandles | null) => {
-      slidersRef.current[index] = el;
-    };
-  }, []);
-
-  function handlePrevious() {
-    slidersRef.current[calendarState.selection]?.previousPage();
-  }
-
-  function handleNext() {
-    slidersRef.current[calendarState.selection]?.nextPage();
-  }
-
-  function handleSelectionType() {
-    setCalendarState(({ direction, selection, ...prev }) => {
-      if (direction > 0 && selection === CalendarSelectionEnum.YEAR)
-        direction = -1;
-
-      if (direction < 0 && selection === CalendarSelectionEnum.DAY)
-        direction = 1;
-
-      return {
-        ...prev,
-        selection: selection + direction,
-        direction: direction,
-      };
-    });
-  }
-
-  function handleOpenCalendar() {
-    setCalendarState((prev) => ({
-      ...prev,
-      isOpen: true,
-    }));
-  }
-
-  function handleClick(event: MouseEvent) {
-    const targetElement = event.target as HTMLElement;
-    const isChildOfContainer = containerRef.current?.contains(targetElement);
-
-    if (isChildOfContainer) return;
-
-    setCalendarState((prev) => {
-      return {
-        ...prev,
-        selection: CalendarSelectionEnum.DAY,
-        isOpen: false,
-      };
-    });
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    const canOpen = event.key === " " && !calendarState.isOpen;
-
-    if (canOpen) {
-      event.preventDefault();
-      setCalendarState((prev) => ({
-        ...prev,
-        isOpen: true,
-      }));
-    }
-  }
-
-  function handleEscPressed(event: KeyboardEvent) {
-    const ignoreKey = event.key !== "Escape";
-
-    if (ignoreKey) return;
-
-    setCalendarState((prev) => ({
-      ...prev,
-      isOpen: false,
-    }));
-  }
 
   function getValidDate(value?: string | null) {
     if (!value) return null;
@@ -200,6 +61,40 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     onBlur?.(event);
   }
 
+  function handleOpenCalendar() {
+    setIsOpenState(true);
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    const canOpen = event.key === " " && !isOpenState;
+
+    if (canOpen) {
+      event.preventDefault();
+      handleOpenCalendar();
+    }
+  }
+
+  function handleClick(event: MouseEvent) {
+    const targetElement = event.target as HTMLElement;
+    const isChildOfContainer = containerRef.current?.contains(targetElement);
+
+    if (isChildOfContainer) return;
+
+    handleOnClose();
+  }
+
+  function handleEscPressed(event: KeyboardEvent) {
+    const ignoreKey = event.key !== "Escape";
+
+    if (ignoreKey) return;
+
+    handleOnClose();
+  }
+
+  function handleOnClose() {
+    setIsOpenState(false);
+  }
+
   useEffect(() => {
     handleOnChangeDispatch(selectedState);
   }, [selectedState, handleOnChangeDispatch]);
@@ -222,24 +117,17 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   }, []);
 
   return {
-    containerRef,
     selectedDate: selectedState,
-    calendar: calendarState,
-    pageLabel,
-    showSelectMonthOrYear,
-    showYearSelection,
     inputValue: inputValueState,
     isMobile,
-    handleOpenCalendar,
-    handleSelectionType,
-    handlePrevious,
-    handleNext,
-    handlePageChange,
-    handleAddRef,
+    isOpen: isOpenState,
+    containerRef,
     handleSelect,
-    handleKeyDown,
     handleOnChange,
     handleOnBlur,
+    handleOpenCalendar,
+    handleKeyDown,
+    handleOnClose,
   };
 }
 
