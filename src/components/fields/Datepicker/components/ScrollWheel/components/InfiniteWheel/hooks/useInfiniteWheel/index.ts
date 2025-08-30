@@ -92,6 +92,7 @@ function useInfiniteWheel({
   }
 
   function handleTouchMove(event: TouchEvent) {
+    event.preventDefault();
     const touch = event.touches.item(0);
     handleMove(touch?.clientY || 0);
   }
@@ -108,7 +109,7 @@ function useInfiniteWheel({
     const touch = event.touches.item(0);
     handleStart(touch.clientY);
 
-    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
     document.addEventListener("touchend", handleTouchEnd);
   }
 
