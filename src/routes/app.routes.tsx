@@ -21,6 +21,12 @@ const router = createHashRouter(
           path: "wallet",
           element: <Wallet />,
         },
+        {
+          path: "*",
+          loader: () => {
+            throw redirect("/");
+          },
+        },
       ],
     },
     {
