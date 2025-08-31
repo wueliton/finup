@@ -131,6 +131,7 @@ function useInfiniteWheel({
     return () => {
       if (disableClickRef.current) return;
       setClientYState(scrollTo * ELEMENT_HEIGHT);
+      onChange?.(scrollTo % listLength);
     };
   }
 

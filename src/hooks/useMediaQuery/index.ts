@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MediaQueryEnum, mediaToQuery } from "./constants";
 import type { UseMediaQueryProps } from "./types";
 
-function useMediaQuery(query: UseMediaQueryProps) {
+function useMediaQuery(
+  query: UseMediaQueryProps,
+): [boolean, React.RefObject<boolean>] {
   const [matches, setMatches] = useState(false);
+  const matchesRef = useRef(false);
   const queryToMq = useMemo(
     () =>
       `(${Object.entries(query)
@@ -16,15 +19,19 @@ function useMediaQuery(query: UseMediaQueryProps) {
 
   useEffect(() => {
     const media = window.matchMedia(queryToMq);
-    const listener = () => setMatches(media.matches);
+    const listener = () => {
+      setMatches(media.matches);
+      matchesRef.current = media.matches;
+    };
 
     setMatches(media.matches);
+    matchesRef.current = media.matches;
 
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
   }, [queryToMq]);
 
-  return matches;
+  return [matches, matchesRef];
 }
 
 export default useMediaQuery;

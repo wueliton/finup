@@ -11,7 +11,7 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   const [isOpenState, setIsOpenState] = useState(false);
   const { containerRef } = useFocusTrap<HTMLDivElement>(isOpenState);
 
-  const isMobile = useMediaQuery({ maxWidth: 680 });
+  const [isMobile, isMobileRef] = useMediaQuery({ maxWidth: 680 });
 
   function handleSelect(date: Date) {
     setSelectedState(date);
@@ -77,8 +77,9 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   function handleClick(event: MouseEvent) {
     const targetElement = event.target as HTMLElement;
     const isChildOfContainer = containerRef.current?.contains(targetElement);
+    const handleSkipClose = isChildOfContainer || isMobileRef.current;
 
-    if (isChildOfContainer) return;
+    if (handleSkipClose) return;
 
     handleOnClose();
   }

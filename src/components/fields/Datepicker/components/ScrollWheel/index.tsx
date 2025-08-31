@@ -1,5 +1,6 @@
 import Animated from "components/Animated";
 import Button from "components/Button";
+import { createPortal } from "react-dom";
 import { CalendarSelectionEnum } from "../../contants";
 import InfiniteWheel from "./components/InfiniteWheel";
 import useScrollWheel from "./hooks/useScrollWheel";
@@ -27,15 +28,16 @@ function ScrollWheel({
     onSelect,
   });
 
-  return (
+  return createPortal(
     <>
       <Animated
         className="inset-none fixed z-20 bg-black/60"
         animation="fade"
+        onClick={onCancel}
         show={isOpen}
       />
       <Animated
-        className="bottom-none left-none fixed z-20 w-full rounded-t-sm bg-white"
+        className="bottom-none left-none fixed z-30 w-full rounded-t-sm bg-white"
         animation="modal"
         show={isOpen}
         ref={containerRef}
@@ -72,7 +74,8 @@ function ScrollWheel({
           </div>
         </div>
       </Animated>
-    </>
+    </>,
+    document.body,
   );
 }
 
