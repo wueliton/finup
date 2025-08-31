@@ -10,6 +10,7 @@ function Datepicker({
   onChange,
   onBlur,
   value,
+  className,
   ...inputProps
 }: DatepickerPops) {
   const {
@@ -31,7 +32,7 @@ function Datepicker({
   });
 
   return (
-    <div className="relative select-none" ref={containerRef}>
+    <div className={`relative select-none ${className}`} ref={containerRef}>
       <Input
         {...inputProps}
         label={label}

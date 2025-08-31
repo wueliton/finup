@@ -6,6 +6,7 @@ function FormDatepicker<TFieldValues extends FieldValues>({
   control,
   name,
   label,
+  ...props
 }: FormDatepickerProps<TFieldValues>) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const internalForm = useForm<any>({ defaultValues: { [name]: "" } });
@@ -16,7 +17,7 @@ function FormDatepicker<TFieldValues extends FieldValues>({
       control={internalControl}
       name={name}
       render={({ field }) => {
-        return <Datepicker label={label} {...field} />;
+        return <Datepicker {...props} label={label} {...field} />;
       }}
     />
   );

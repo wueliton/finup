@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 const buttonStyles = tv({
   slots: {
     container:
-      "p-sm gap-xxs flex items-center justify-center rounded-sm transition not-disabled:cursor-pointer",
+      "gap-xxs flex items-center justify-center rounded-sm transition not-disabled:cursor-pointer",
   },
   variants: {
     variant: {
@@ -13,16 +13,25 @@ const buttonStyles = tv({
       },
       secondary: {
         container:
-          "border border-gray-300 shadow hover:not-disabled:bg-gray-100 active:not-disabled:bg-gray-200",
+          "border border-gray-300 bg-white shadow hover:not-disabled:bg-gray-100 active:not-disabled:bg-gray-200",
       },
       ghost: {
         container:
           "hover:not-disabled:bg-gray-100 active:not-disabled:bg-gray-200",
       },
     },
+    size: {
+      normal: {
+        container: "p-sm",
+      },
+      sm: {
+        container: "p-xs",
+      },
+    },
   },
   defaultVariants: {
     variant: "primary",
+    size: "normal",
   },
 });
 

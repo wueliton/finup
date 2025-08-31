@@ -6,6 +6,16 @@ function useAddTransaction() {
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(addTransactionSchema),
   });
+  const categoryList = [
+    { id: "123", name: "Categoria 1" },
+    { id: "345", name: "Categoria 2" },
+  ];
+  const paymentTypeList = [
+    {
+      id: "123",
+      name: "Nubank",
+    },
+  ];
 
   function onSubmit(data: unknown) {
     console.log({ data });
@@ -13,6 +23,8 @@ function useAddTransaction() {
 
   return {
     control,
+    categoryList,
+    paymentTypeList,
     onSubmit: handleSubmit(onSubmit),
   };
 }

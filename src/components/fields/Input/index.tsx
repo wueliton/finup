@@ -16,6 +16,7 @@ function Input(
     mask,
     hideInput,
     error,
+    className,
     ...inputProps
   }: InputProps,
   ref: React.Ref<HTMLInputElement>,
@@ -66,7 +67,10 @@ function Input(
   }
 
   return (
-    <div className="gap-xs flex flex-col" onClick={handleOnClick}>
+    <div
+      className={`gap-xs flex flex-col ${className}`}
+      onClick={handleOnClick}
+    >
       <div className={container()}>
         {prefix}
         <div className={content()}>
@@ -74,7 +78,6 @@ function Input(
           <input
             {...inputProps}
             className={input({
-              className: inputProps.className,
               hidden: hideInput,
             })}
             placeholder={inputProps.placeholder ?? ""}

@@ -2,9 +2,10 @@ import { memo } from "react";
 import { buttonStyles } from "./styles";
 import type { ButtonProps } from "./types";
 
-function Button({ variant, ...buttonProps }: ButtonProps) {
+function Button({ variant, size, ...buttonProps }: ButtonProps) {
   const { container } = buttonStyles({
     variant,
+    size,
   });
 
   return (

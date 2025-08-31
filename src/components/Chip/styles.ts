@@ -15,6 +15,9 @@ const chipStyles = tv({
       white: {
         container: "bg-white/30 text-white",
       },
+      gray: {
+        container: "bg-gray-200",
+      },
     },
     size: {
       normal: {
@@ -27,6 +30,7 @@ const chipStyles = tv({
   },
   defaultVariants: {
     size: "normal",
+    variant: "gray",
   },
 });
 
