@@ -1,14 +1,9 @@
+import type { ComponentEvent } from "types/component-event";
 import type { InputProps } from "../Input/types";
-
-type OnChangeEvent = {
-  target: {
-    value?: null | Date;
-  };
-};
 
 interface DatepickerPops
   extends Omit<InputProps, "prefix" | "mask" | "maxLength" | "onChange"> {
-  onChange?: (event: OnChangeEvent) => void;
+  onChange?: (event: ComponentEvent<null | Date>) => void;
 }
 
 export type { DatepickerPops };

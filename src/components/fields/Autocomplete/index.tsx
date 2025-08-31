@@ -9,6 +9,7 @@ function Autocomplete<Data extends object>({
   value,
   data,
   name,
+  prefix,
   renderOption,
   renderSelectedOption,
   onChange,
@@ -51,6 +52,7 @@ function Autocomplete<Data extends object>({
             </div>
           ) : null
         }
+        prefix={prefix}
         name={name}
         label={label}
         onClick={handleClick}

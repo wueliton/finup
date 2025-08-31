@@ -17,7 +17,13 @@ function Icon({ name, size = 24, className, weight }: IconProps) {
   const invalidIcon = !Icon;
 
   if (invalidIcon) return null;
-  return <Icon size={size} className={className} weight={weight} />;
+  return (
+    <Icon
+      size={size}
+      className={`text-black/40 ${className}`}
+      weight={weight}
+    />
+  );
 }
 
 export default memo(Icon);

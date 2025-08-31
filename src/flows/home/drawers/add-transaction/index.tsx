@@ -2,10 +2,12 @@ import { Button, Chip } from "@components";
 import Dialog from "components/Dialog";
 import type { DialogComponentProps } from "components/Dialog/hooks/useCreateDialog/types";
 import Autocomplete from "components/fields/Autocomplete";
-import ButtonToggle from "components/fields/ButtonToggle";
+import ButtonToggle from "components/fields/ButtonToggleGroup/components/ButtonToggle";
 import FormAutomcomplete from "components/form/FormAutocomplete";
+import FormButtonToggleGroup from "components/form/FormButtonToggleGroup";
 import FormDatepicker from "components/form/FormDatepicker";
 import FormInput from "components/form/FormInput";
+import Icon from "components/Icon";
 import useAddTransaction from "./hooks/useAddTransaction";
 
 function AddTransactionDialog({ onClose }: DialogComponentProps) {
@@ -25,8 +27,20 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
           id="add-transaction-form"
           className="gap-sm flex flex-col"
         >
-          <ButtonToggle />
-          <FormInput control={control} name="description" label="Descrição" />
+          <FormButtonToggleGroup
+            ariaLabel="Tipo de lançamento"
+            control={control}
+            name="type"
+          >
+            <ButtonToggle value="expense">Despesa</ButtonToggle>
+            <ButtonToggle value="income">Receita</ButtonToggle>
+          </FormButtonToggleGroup>
+          <FormInput
+            control={control}
+            name="description"
+            label="Descrição"
+            prefix={<Icon name="PenNewSquare" />}
+          />
           <div className="gap-sm flex">
             <FormInput
               control={control}
@@ -49,6 +63,7 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
             name="category"
             label="Categoria"
             data={categoryList}
+            prefix={<Icon name="FolderWithFiles" />}
             renderOption={(data, props) => (
               <Autocomplete.Option {...props}>{data.name}</Autocomplete.Option>
             )}
@@ -63,6 +78,7 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
             name="paymentType"
             label="Meio de pagamento"
             data={paymentTypeList}
+            prefix={<Icon name="Wallet" />}
             renderOption={(data, props) => (
               <Autocomplete.Option {...props}>{data.name}</Autocomplete.Option>
             )}

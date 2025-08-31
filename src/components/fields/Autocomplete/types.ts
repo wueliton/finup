@@ -21,6 +21,7 @@ interface AutocompleteProps<
   value?: Data | null;
   label: string;
   name?: string;
+  prefix?: React.ReactNode;
   groupBy?: (data: Data) => Data[K];
   renderGroup?: (group: string, children: React.ReactNode) => React.JSX.Element;
   renderOption: (data: Data, options: OptionProps) => React.JSX.Element;
