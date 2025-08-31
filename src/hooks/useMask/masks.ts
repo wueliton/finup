@@ -4,12 +4,15 @@ class Masks {
   }
 
   static float(value: string) {
-    const onlyNumbers = this.number(value);
-    return parseInt(String(onlyNumbers), 10) / 100;
+    const number = this.number(value);
+    const toFloat = number / 100;
+
+    return toFloat;
   }
 
   static currency(value: string | number) {
-    const numbers = this.float(String(value));
+    const valueToString = Number(value).toFixed(2);
+    const numbers = this.float(valueToString);
     const formatted = numbers.toLocaleString("pt-BR", {
       style: "decimal",
       maximumFractionDigits: 2,
