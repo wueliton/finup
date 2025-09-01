@@ -5,10 +5,12 @@ const addTransactionSchema = yup.object({
   description: yup.string().required(),
   value: yup.number().required(),
   transactionAt: yup.date().required(),
-  category: yup.object({
-    id: yup.string(),
-    name: yup.string(),
-  }),
+  category: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required(),
   paymentType: yup.object({
     id: yup.string(),
     name: yup.string(),

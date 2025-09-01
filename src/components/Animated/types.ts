@@ -11,4 +11,4 @@ interface AnimatedProps extends React.HTMLAttributes<HTMLDivElement> {
   show?: boolean;
 }
 
-export type { AnimatedProps };
+export type { AnimatedProps, AnimatedVariants };

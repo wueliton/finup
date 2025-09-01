@@ -1,61 +1,59 @@
 import { tv } from "tailwind-variants";
 
+const animation = {
+  zoom: {},
+  pop: {},
+  fade: {},
+  modal: {},
+};
+
+const addAnimation = (
+  name: keyof typeof animation,
+  inClass: string,
+  outClass: string,
+) => [
+  {
+    animation: name,
+    isMounted: false,
+    className: inClass,
+  },
+  {
+    animation: name,
+    isMounted: true,
+    className: outClass,
+  },
+];
+
 const animatedStyles = tv({
   base: "",
   variants: {
-    animation: {
-      zoom: {},
-      pop: {},
-      fade: {},
-      modal: {},
-    },
+    animation,
     isMounted: {
       true: "",
       false: "",
     },
   },
   compoundVariants: [
-    {
-      animation: "zoom",
-      isMounted: false,
-      className: "motion-safe:animate-zoom-out",
-    },
-    {
-      animation: "zoom",
-      isMounted: true,
-      className: "motion-safe:animate-zoom-in",
-    },
-    {
-      animation: "pop",
-      isMounted: false,
-      className: "motion-safe:animate-pop-down",
-    },
-    {
-      animation: "pop",
-      isMounted: true,
-      className: "motion-safe:animate-pop-up",
-    },
-    {
-      animation: "fade",
-      isMounted: false,
-      className: "motion-safe:animate-fade-in",
-    },
-    {
-      animation: "fade",
-      isMounted: true,
-      className: "motion-safe:animate-fade-out",
-    },
-    {
-      animation: "modal",
-      isMounted: false,
-      className:
-        "motion-safe:animate-slide-down lg:motion-safe:animate-pop-down",
-    },
-    {
-      animation: "modal",
-      isMounted: true,
-      className: "motion-safe:animate-slide-up lg:motion-safe:animate-pop-up",
-    },
+    ...addAnimation(
+      "zoom",
+      "motion-safe:animate-zoom-out",
+      "motion-safe:animate-zoom-in",
+    ),
+    ...addAnimation(
+      "pop",
+      "motion-safe:animate-pop-down",
+      "motion-safe:animate-pop-up",
+    ),
+    ...addAnimation(
+      "fade",
+      "motion-safe:animate-fade-in",
+      "motion-safe:animate-fade-out",
+    ),
+    ...addAnimation(
+      "modal",
+      "motion-safe:animate-slide-down lg:motion-safe:animate-pop-down",
+      "motion-safe:animate-slide-up lg:motion-safe:animate-pop-up",
+    ),
   ],
 });
 

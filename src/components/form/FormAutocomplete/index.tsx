@@ -18,8 +18,14 @@ function FormAutomcomplete<
     <Controller
       control={internalControl}
       name={name}
-      render={({ field }) => {
-        return <Autocomplete {...autocompleteProps} {...field} />;
+      render={({ field, fieldState: { error } }) => {
+        return (
+          <Autocomplete
+            {...autocompleteProps}
+            {...field}
+            error={error?.message}
+          />
+        );
       }}
     />
   );

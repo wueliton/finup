@@ -10,6 +10,7 @@ function Autocomplete<Data extends object>({
   data,
   name,
   prefix,
+  error,
   renderOption,
   renderSelectedOption,
   onChange,
@@ -57,6 +58,7 @@ function Autocomplete<Data extends object>({
         label={label}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
+        error={error}
       />
       <FloatMenu
         isOpen={isOpen}

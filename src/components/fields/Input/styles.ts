@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 const inputStyles = tv({
   slots: {
     container:
-      "px-xs gap-xs min-h-xl flex cursor-text items-center rounded-xs border border-black/15 focus-within:ring-2 focus-within:ring-blue-300",
+      "px-xs gap-xs min-h-xl flex cursor-text items-center rounded-xs border border-black/15",
     content:
       "pt-sm pb-xxs gap-xs relative flex w-full items-center justify-start",
     input:
@@ -17,6 +17,19 @@ const inputStyles = tv({
         input: "size-none absolute",
       },
     },
+    error: {
+      false: {
+        container:
+          "focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200",
+      },
+      true: {
+        container:
+          "border-red-200 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-200",
+      },
+    },
+  },
+  defaultVariants: {
+    error: false,
   },
 });
 

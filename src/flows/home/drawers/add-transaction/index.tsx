@@ -3,6 +3,8 @@ import Dialog from "components/Dialog";
 import type { DialogComponentProps } from "components/Dialog/hooks/useCreateDialog/types";
 import Autocomplete from "components/fields/Autocomplete";
 import ButtonToggle from "components/fields/ButtonToggleGroup/components/ButtonToggle";
+import Datepicker from "components/fields/Datepicker";
+import Toggle from "components/fields/Toggle";
 import FormAutomcomplete from "components/form/FormAutocomplete";
 import FormButtonToggleGroup from "components/form/FormButtonToggleGroup";
 import FormDatepicker from "components/form/FormDatepicker";
@@ -11,7 +13,7 @@ import Icon from "components/Icon";
 import useAddTransaction from "./hooks/useAddTransaction";
 
 function AddTransactionDialog({ onClose }: DialogComponentProps) {
-  const { control, categoryList, paymentTypeList, onSubmit } =
+  const { control, categoryList, isExpense, paymentTypeList, onSubmit } =
     useAddTransaction();
 
   return (
@@ -88,6 +90,18 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
               </Chip>
             )}
           />
+          <Toggle name="installments">Compra parcelada</Toggle>
+          {isExpense ? (
+            <div className="gap-sm grid grid-cols-2">
+              <FormInput
+                name="installments"
+                label="Parcelas"
+                prefix={<Icon name="Bill" />}
+                mask="number"
+              />
+              <Datepicker name="payment" label="Data Primeiro pagamento" />
+            </div>
+          ) : null}
         </form>
       </Dialog.Body>
       <Dialog.Actions>

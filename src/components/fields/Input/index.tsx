@@ -21,7 +21,9 @@ function Input(
   }: InputProps,
   ref: React.Ref<HTMLInputElement>,
 ) {
-  const { container, content, input, labelContainer } = inputStyles();
+  const { container, content, input, labelContainer } = inputStyles({
+    error: Boolean(error),
+  });
   const { value, isNumber, inputMode, onChange } = useMask(
     mask,
     inputProps.value,

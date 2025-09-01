@@ -16,8 +16,15 @@ function FormDatepicker<TFieldValues extends FieldValues>({
     <Controller
       control={internalControl}
       name={name}
-      render={({ field }) => {
-        return <Datepicker {...props} label={label} {...field} />;
+      render={({ field, fieldState: { error } }) => {
+        return (
+          <Datepicker
+            {...props}
+            label={label}
+            error={error?.message}
+            {...field}
+          />
+        );
       }}
     />
   );
