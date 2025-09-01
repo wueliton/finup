@@ -1,69 +1,67 @@
-# React + TypeScript + Vite
+# 💰 FinUp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **FinUp** é um sistema de gerenciamento de finanças pessoais em desenvolvimento, criado com o objetivo de explorar boas práticas de **construção de componentes do zero**, além de documentar **complexidade técnica, acessibilidade e usabilidade** de cada parte da aplicação.
 
-Currently, two official plugins are available:
+Atualmente o projeto contém um **dashboard mockado** e um **modal de adicionar despesas/receitas**, sem ações conectadas, apenas para demonstrar o funcionamento inicial dos componentes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <img src="./screenshots/dashboard.gif" width="45%" alt="Dashboard" />
+  <img src="./screenshots//add-expense.gif" width="45%" alt="Modal" />
+</p>
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Objetivo do Projeto
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Criar uma aplicação de finanças pessoais **do zero**.
+- Documentar o processo de desenvolvimento de cada **componente** e **funcionalidade**.
+- Explorar temas como **arquitetura**, **acessibilidade** e **usabilidade**.
+- Usar o projeto como **portfólio** e base para estudos.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🏗️ Status Atual
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+✔ Dashboard mockado  
+✔ Modal de adicionar despesa/receita (ainda sem ação)  
+⬜ Carteira com meios de pagamentos mockado  
+⬜ Conexão com dados reais  
+⬜ Cadastro de transações  
+⬜ Relatórios e gráficos
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📦 Componentes Atuais
+
+- **Dashboard** (layout mockado de resumo financeiro).
+- **Modal de Adicionar Transação** (interface inicial para adicionar despesa/receita).
+
+> Cada componente terá documentação detalhada em posts separados.
+
+---
+
+## 📝 Documentação e Posts
+
+Este repositório servirá também como base para uma **série de artigos**, explicando:
+
+- Como cada componente foi construído.
+- As decisões de design, arquitetura e acessibilidade.
+- As funcionalidades e melhorias ao longo do tempo.
+
+📌 Posts planejados:
+
+1. **Introdução ao FinUp** – objetivo, stack e visão geral.
+2. **Criando o Dashboard inicial** – estruturação e primeiras decisões de UI.
+3. **Modal de Adicionar Transação** – primeiros passos na interação.
+4. Próximos componentes: Inputs, Botões, Listagem de Transações, etc.
+
+---
+
+## 🖥️ Como rodar o projeto
+
+```bash
+git clone https://github.com/wueliton/finup.git
+cd finup
+npm install
+npm run dev
 ```
