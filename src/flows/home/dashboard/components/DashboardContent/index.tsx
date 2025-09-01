@@ -33,7 +33,7 @@ function DashboardContent() {
           <StatementLine
             to={""}
             icon="Wallet"
-            title="Pagamento WeFit"
+            title="Pagamento Salário"
             category="Salário"
             updatedAt="Hoje às 9:00"
             amount={800}

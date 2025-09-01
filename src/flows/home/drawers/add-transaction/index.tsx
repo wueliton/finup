@@ -92,7 +92,7 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
           />
           <Toggle name="installments">Compra parcelada</Toggle>
           {isExpense ? (
-            <div className="gap-sm grid grid-cols-2">
+            <div className="gap-sm grid md:grid-cols-2">
               <FormInput
                 name="installments"
                 label="Parcelas"
