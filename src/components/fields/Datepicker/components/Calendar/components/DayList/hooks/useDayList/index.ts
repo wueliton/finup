@@ -19,11 +19,20 @@ function useDayList({ selectedDay, listMonth, onSelect }: UseDayListProps) {
     const daysList = eachDayOfInterval({
       start: firstWeekDay,
       end: lastCalendarDay,
-    });
+    }).map((day) => ({
+      day,
+      displayName: format(day, "d"),
+      fullName: format(day, "PPPP", { locale: ptBR }),
+      key: day.getTime(),
+    }));
 
-    const weekDayNames = Array.from({ length: 7 }).map((_, i) =>
-      format(addDays(firstWeekDay, i), "EEEEE", { locale: ptBR }),
-    );
+    const weekDayNames = Array.from({ length: 7 }).map((_, i) => {
+      const weekDay = addDays(firstWeekDay, i);
+      return {
+        displayName: format(weekDay, "EEEEE", { locale: ptBR }),
+        fullName: format(weekDay, "EEEE", { locale: ptBR }),
+      };
+    });
 
     return {
       daysList,
@@ -32,15 +41,25 @@ function useDayList({ selectedDay, listMonth, onSelect }: UseDayListProps) {
   }, [listMonth]);
 
   const isDayOfMonth = useCallback(
-    (day?: Date | null) => ({
-      isSameMonth: Boolean(
-        day &&
-          day.getMonth() === listMonth.getMonth() &&
-          day.getFullYear() === listMonth.getFullYear(),
-      ),
-      isSelectedDay: Boolean(selectedDay && day && isSameDay(day, selectedDay)),
-      isToday: Boolean(day && isToday(day)),
-    }),
+    (day?: Date | null, tabIndexDate?: Date | null) => {
+      const isSelectedDay = Boolean(
+        selectedDay && day && isSameDay(day, selectedDay),
+      );
+      const isTodayValidation = Boolean(day && isToday(day));
+      const tabIndex =
+        day && isSameDay(day, tabIndexDate ?? new Date()) ? 0 : -1;
+
+      return {
+        isSameMonth: Boolean(
+          day &&
+            day.getMonth() === listMonth.getMonth() &&
+            day.getFullYear() === listMonth.getFullYear(),
+        ),
+        isSelectedDay,
+        isToday: isTodayValidation,
+        tabIndex,
+      };
+    },
     [listMonth, selectedDay],
   );
 

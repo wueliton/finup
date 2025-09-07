@@ -3,6 +3,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent as ReactMouseEvent,
 } from "react";
 import type { UseSlideContentProps } from "./types";
@@ -13,21 +14,29 @@ function useSlideContent({ onPageChange }: UseSlideContentProps) {
   const [isDraggingState, setIsDraggingState] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const startMouseDownRef = useRef(0);
+  const [disableClickState, setDisableClickState] = useState(false);
   const containerSize = useElementSize<HTMLDivElement>({ ref: containerRef });
-  const { prevPageStyle, pageStyle, nextPageStyle } = useMemo(
-    () => ({
+  const { prevPageStyle, pageStyle, nextPageStyle } = useMemo(() => {
+    const pointerEvents: CSSProperties["pointerEvents"] = disableClickState
+      ? "none"
+      : "auto";
+    const addedStyle = { pointerEvents };
+
+    return {
       prevPageStyle: {
         transform: `translateX(${(pageState + 1) * -100}%)`,
+        ...addedStyle,
       },
       pageStyle: {
         transform: `translateX(${pageState * -100}%)`,
+        ...addedStyle,
       },
       nextPageStyle: {
         transform: `translateX(${(pageState - 1) * -100}%)`,
+        ...addedStyle,
       },
-    }),
-    [pageState],
-  );
+    };
+  }, [pageState, disableClickState]);
 
   const containerStyle = useMemo(() => {
     const containerWidth = containerSize.width * pageState;
@@ -47,6 +56,9 @@ function useSlideContent({ onPageChange }: UseSlideContentProps) {
     const movementDirection = mouseOffset > 0 ? 1 : -1;
     const movementOffset = Math.min(Math.abs(mouseOffset), containerSize.width);
     const movement = movementOffset * movementDirection;
+    const disableClick = Math.abs(startClientX - clientX) > 5;
+
+    if (disableClick) setDisableClickState(true);
 
     setDragXOffsetState(movement);
   }
@@ -77,6 +89,8 @@ function useSlideContent({ onPageChange }: UseSlideContentProps) {
 
     setDragXOffsetState(0);
     setPageState(pageSize);
+
+    setTimeout(() => setDisableClickState(false), 100);
 
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);

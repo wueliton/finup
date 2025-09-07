@@ -1,6 +1,6 @@
 import Dialog from "components/Dialog";
 import useCreateDialog from "components/Dialog/hooks/useCreateDialog";
-import { createElement } from "react";
+import { createElement, memo } from "react";
 
 function DialogLayout() {
   const { isOpen, DrawerComponent, handleClose } = useCreateDialog();
@@ -14,4 +14,4 @@ function DialogLayout() {
   );
 }
 
-export default DialogLayout;
+export default memo(DialogLayout);

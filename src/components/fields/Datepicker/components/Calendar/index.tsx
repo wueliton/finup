@@ -21,14 +21,17 @@ function DesktopSelector({
     pageLabel,
     showSelectMonthOrYear,
     showYearSelection,
+    focusTrapRef,
     handleSelectionType,
     handlePrevious,
     handleNext,
     handlePageChange,
     handleAddRef,
     handleSelect,
+    handleKeyDown,
   } = useDesktopSelector({
     selectedDate,
+    isOpen,
     onSelect,
   });
 
@@ -36,15 +39,19 @@ function DesktopSelector({
     <FloatMenu
       isOpen={isOpen}
       containerRef={containerRef}
+      ref={focusTrapRef}
+      onKeyDown={handleKeyDown}
       className="gap-md flex min-w-2xl flex-col"
     >
       <div className="flex items-center justify-between">
-        <button
-          onClick={handleSelectionType}
-          className="cursor-pointer first-letter:capitalize"
-        >
-          {pageLabel}
-        </button>
+        <div aria-live="polite">
+          <button
+            onClick={handleSelectionType}
+            className="cursor-pointer first-letter:capitalize"
+          >
+            {pageLabel}
+          </button>
+        </div>
         <div className="gap-xs flex items-center">
           <ButtonIcon icon="AltArrowLeft" onClick={handlePrevious} />
           <ButtonIcon icon="AltArrowRight" onClick={handleNext} />
@@ -59,6 +66,7 @@ function DesktopSelector({
               selectedDay={selectedDate}
               listMonth={addMonths(calendar.date, page)}
               onSelect={handleSelect(CalendarSelectionEnum.DAY)}
+              nextTabIndexDate={calendar.tabIndexDate}
             />
           )}
         />

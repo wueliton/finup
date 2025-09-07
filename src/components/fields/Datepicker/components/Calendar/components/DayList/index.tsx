@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import useDayList from "./hooks/useDayList";
 import { dayButtonStyle } from "./styles";
 import type { DayListProps } from "./types";
@@ -14,19 +13,26 @@ function DayList({ selectedDay, listMonth, onSelect }: DayListProps) {
     <div className="grid h-full grid-cols-7 text-center">
       {weekDayNames.map((weekDay, i) => (
         <div className="py-xxs text-sm text-black/40" key={`${weekDay}${i}`}>
-          {weekDay}
+          <abbr title={weekDay.fullName}>{weekDay.displayName}</abbr>
         </div>
       ))}
-      {daysList.map((day) => (
-        <div
-          className={dayButtonStyle(isDayOfMonth(day))}
-          key={day.getTime()}
-          role="button"
-          onClick={handleOnClick(day)}
-        >
-          <div>{format(day, "d")}</div>
-        </div>
-      ))}
+      {daysList.map(({ day, key, displayName, fullName }) => {
+        const dayAttributes = isDayOfMonth(day);
+
+        return (
+          <div className={dayButtonStyle(dayAttributes)} key={key}>
+            <div
+              role="button"
+              onClick={handleOnClick(day)}
+              aria-label={fullName}
+              aria-pressed={dayAttributes.isSelectedDay}
+              tabIndex={dayAttributes.tabIndex}
+            >
+              {displayName}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

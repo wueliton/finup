@@ -90,17 +90,19 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
               </Chip>
             )}
           />
-          <Toggle name="installments">Compra parcelada</Toggle>
           {isExpense ? (
-            <div className="gap-sm grid md:grid-cols-2">
-              <FormInput
-                name="installments"
-                label="Parcelas"
-                prefix={<Icon name="Bill" />}
-                mask="number"
-              />
-              <Datepicker name="payment" label="Data Primeiro pagamento" />
-            </div>
+            <>
+              <Toggle name="installments">Compra parcelada</Toggle>
+              <div className="gap-sm grid md:grid-cols-2">
+                <FormInput
+                  name="installments"
+                  label="Parcelas"
+                  prefix={<Icon name="Bill" />}
+                  mask="number"
+                />
+                <Datepicker name="payment" label="Data Primeiro pagamento" />
+              </div>
+            </>
           ) : null}
         </form>
       </Dialog.Body>

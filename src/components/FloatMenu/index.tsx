@@ -1,15 +1,20 @@
+import { forwardRef } from "react";
 import { createPortal } from "react-dom";
 import useFloatMenu from "./hooks/useFloatMenu";
 import { floatMenuStyle } from "./styles";
 import type { FloatMenuProps } from "./types";
 
-function FloatMenu({
-  isOpen,
-  children,
-  className,
-  containerRef,
-  fullContainerWidth,
-}: FloatMenuProps) {
+function FloatMenu(
+  {
+    isOpen,
+    children,
+    className,
+    containerRef,
+    fullContainerWidth,
+    ...divProps
+  }: FloatMenuProps,
+  ref: React.Ref<HTMLDivElement>,
+) {
   const { floatContainerStyle, menuRef, isClosed } = useFloatMenu({
     isOpen,
     containerRef,
@@ -20,7 +25,7 @@ function FloatMenu({
   if (isClosed) return null;
 
   return createPortal(
-    <div className={container()}>
+    <div {...divProps} className={container()} ref={ref}>
       <div
         ref={menuRef}
         className={content({ zoomIn: isOpen })}
@@ -39,4 +44,4 @@ function FloatMenu({
   );
 }
 
-export default FloatMenu;
+export default forwardRef(FloatMenu);

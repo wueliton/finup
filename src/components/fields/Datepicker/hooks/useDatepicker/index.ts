@@ -1,7 +1,6 @@
 import { format, isValid, parse } from "date-fns";
-import useFocusTrap from "hooks/useFocusTrap";
 import useMediaQuery from "hooks/useMediaQuery";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ComponentEvent } from "types/component-event";
 import type { UseDatepickerProps } from "./types";
 
@@ -9,7 +8,7 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   const [inputValueState, setInpuValueState] = useState<string>();
   const [selectedState, setSelectedState] = useState<Date | null>();
   const [isOpenState, setIsOpenState] = useState(false);
-  const { containerRef } = useFocusTrap<HTMLDivElement>(isOpenState);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [isMobile, isMobileRef] = useMediaQuery({ maxWidth: 680 });
 

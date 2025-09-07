@@ -2,17 +2,21 @@ import { CalendarSelectionEnum } from "components/fields/Datepicker/contants";
 import type { SlideContentHandles } from "components/SlideContent/types";
 import { addMonths, addYears, format, getYear } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useCallback, useMemo, useRef, useState } from "react";
+import useFocusTrap from "hooks/useFocusTrap";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { UseDesktopSelectorProps } from "./types";
 
 function useDesktopSelector({
   selectedDate,
+  isOpen,
   onSelect,
 }: UseDesktopSelectorProps) {
+  const { containerRef } = useFocusTrap<HTMLDivElement>(true);
   const [calendarState, setCalendarState] = useState({
     date: selectedDate ?? new Date(),
     selection: CalendarSelectionEnum.DAY,
     direction: 1,
+    tabIndexDate: selectedDate ?? new Date(),
   });
   const pageLabel = useMemo(() => {
     const selectedType = calendarState.selection;
@@ -102,17 +106,44 @@ function useDesktopSelector({
     });
   }
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    const acceptKeys = [
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowRight",
+      "ArrowLeft",
+    ].includes(event.key);
+    const ignoreEvent = !isOpen || !acceptKeys;
+
+    if (ignoreEvent) return;
+
+    console.log({ key: event.key });
+  }
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTimeout(() => {
+        setCalendarState((prev) => ({
+          ...prev,
+          date: selectedDate ?? new Date(),
+        }));
+      }, 200);
+    }
+  }, [selectedDate, isOpen]);
+
   return {
     calendar: calendarState,
     pageLabel,
     showSelectMonthOrYear,
     showYearSelection,
+    focusTrapRef: containerRef,
     handleSelectionType,
     handlePrevious,
     handleNext,
     handlePageChange,
     handleAddRef,
     handleSelect,
+    handleKeyDown,
   };
 }
 

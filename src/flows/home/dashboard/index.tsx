@@ -6,7 +6,7 @@ const DashboardContent = lazy(() => import("./components/DashboardContent"));
 function Dashboard() {
   return (
     <Suspense fallback={<DashboardShimmer />}>
-      <DashboardContent />
+      <DashboardContent key="dashboard" />
     </Suspense>
   );
 }

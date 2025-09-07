@@ -1,64 +1,79 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { focusableElementsSelector, KEYCODE_TAB } from "./constants";
+import { focusTrapManager } from "./FocusTrap.class";
 
 function useFocusTrap<T extends HTMLElement>(isOpen?: boolean) {
   const containerRef = useRef<T>(null);
 
-  function handleKeyDown(e: KeyboardEvent) {
-    const isTabPressed = e.key === "Tab" || e.keyCode === KEYCODE_TAB;
-    const anotherKeyPressed = !isTabPressed;
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      const isTopElement = focusTrapManager.isTop(containerRef.current);
+      const isTabPressed = e.key === "Tab" || e.keyCode === KEYCODE_TAB;
+      const ignoreEvent = !isTabPressed || !isTopElement || !isOpen;
 
-    if (anotherKeyPressed) return;
+      if (ignoreEvent) return;
 
-    const elements = Array.from(
-      containerRef.current?.querySelectorAll<HTMLElement>(
-        focusableElementsSelector,
-      ) ?? [],
-    );
+      const elements = Array.from(
+        containerRef.current?.querySelectorAll<HTMLElement>(
+          focusableElementsSelector,
+        ) ?? [],
+      );
 
-    const firstFocusableEl = elements?.at(0);
+      const firstFocusableEl = elements?.at(0);
 
-    const lastFocusableEl = elements?.at(-1);
-    const isNotChildOfContainer =
-      !document.activeElement ||
-      !containerRef.current?.contains(document.activeElement);
-    const isLastFocusableEl = document.activeElement === firstFocusableEl;
-    const isFirstFocusableEl = document.activeElement === lastFocusableEl;
+      const lastFocusableEl = elements?.at(-1);
+      const isNotChildOfContainer =
+        !document.activeElement ||
+        !containerRef.current?.contains(document.activeElement);
+      const isLastFocusableEl = document.activeElement === lastFocusableEl;
+      const isFirstFocusableEl = document.activeElement === firstFocusableEl;
 
-    if (e.shiftKey) {
-      if (isLastFocusableEl) {
-        lastFocusableEl?.focus();
-        e.preventDefault();
+      if (e.shiftKey) {
+        if (isNotChildOfContainer) {
+          lastFocusableEl?.focus();
+          e.preventDefault();
+          return;
+        }
+
+        if (isFirstFocusableEl) {
+          lastFocusableEl?.focus();
+          e.preventDefault();
+        }
+
+        return;
       }
 
-      return;
-    }
+      if (isLastFocusableEl) {
+        firstFocusableEl?.focus();
+        e.preventDefault();
+        return;
+      }
 
-    if (isFirstFocusableEl) {
-      firstFocusableEl?.focus();
-      e.preventDefault();
-    }
+      if (isNotChildOfContainer) {
+        firstFocusableEl?.focus();
+        e.preventDefault();
+      }
+    },
+    [isOpen],
+  );
 
-    if (isNotChildOfContainer) {
-      firstFocusableEl?.focus();
-      e.preventDefault();
-    }
-  }
+  const addRef = (element: T) => {
+    containerRef.current = element;
+    focusTrapManager.add(element);
+  };
 
   useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-    } else {
-      document.removeEventListener("keydown", handleKeyDown);
-    }
+    const container = containerRef.current;
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      focusTrapManager.remove(container);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [handleKeyDown, isOpen]);
 
   return {
-    containerRef,
+    containerRef: addRef,
   };
 }
 

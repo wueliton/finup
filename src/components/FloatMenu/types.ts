@@ -1,10 +1,8 @@
 import type { RefObject } from "react";
 
-interface FloatMenuProps {
+interface FloatMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen?: boolean;
-  children?: React.ReactNode;
   containerRef: RefObject<HTMLDivElement | null>;
-  className?: string;
   fullContainerWidth?: boolean;
 }
 
