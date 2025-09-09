@@ -16,7 +16,7 @@ const chipStyles = tv({
         container: "bg-white/30 text-white",
       },
       gray: {
-        container: "bg-gray-200",
+        container: "bg-gray-200 text-black/90",
       },
     },
     size: {

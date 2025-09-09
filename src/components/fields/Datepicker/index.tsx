@@ -36,7 +36,7 @@ function Datepicker({
       <Input
         {...inputProps}
         label={label}
-        prefix={<Icon name="Calendar" className="text-black/50" />}
+        prefix={<Icon name="Calendar" />}
         value={inputValue}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
