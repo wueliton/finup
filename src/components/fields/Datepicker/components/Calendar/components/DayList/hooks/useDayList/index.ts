@@ -79,16 +79,30 @@ function useDayList({
     [listMonth, selectedDay, nextTabIndexDate],
   );
 
-  const handleOnClick = (date: Date) => () => {
-    onSelect?.(date);
-  };
+  const handleOnClick =
+    (date: Date) => (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onSelect?.(date);
+    };
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     const key = event.key as KeyboardNavigateKeysEnum;
-    const acceptKeys = Object.keys(daysKeysMap).includes(key);
+    const acceptKeys = Object.values(KeyboardNavigateKeysEnum).includes(key);
     const ignoreEvent = !acceptKeys || !nextTabIndexDate;
+    const selectEvent =
+      key === KeyboardNavigateKeysEnum.SPACE ||
+      key === KeyboardNavigateKeysEnum.ENTER;
 
     if (ignoreEvent) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (selectEvent) {
+      onSelect?.(nextTabIndexDate);
+      return;
+    }
 
     const changedDate = addDays(nextTabIndexDate, daysKeysMap[key]);
     onFocusChange?.(changedDate);

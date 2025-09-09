@@ -1,7 +1,6 @@
 import yup from "config/yup.config";
 
 const addTransactionSchema = yup.object({
-  type: yup.string().required(),
   description: yup.string().required(),
   value: yup.number().required(),
   transactionAt: yup.date().required(),

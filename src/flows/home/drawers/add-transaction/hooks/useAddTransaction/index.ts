@@ -3,14 +3,9 @@ import { useForm } from "react-hook-form";
 import { addTransactionSchema } from "./schema";
 
 function useAddTransaction() {
-  const { control, handleSubmit, watch } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: yupResolver(addTransactionSchema),
-    defaultValues: {
-      type: "expense",
-    },
   });
-  const transactionType = watch("type");
-  const isExpense = transactionType === "expense";
   const categoryList = [
     { id: "123", name: "Categoria 1" },
     { id: "345", name: "Categoria 2" },
@@ -28,7 +23,6 @@ function useAddTransaction() {
 
   return {
     control,
-    isExpense,
     categoryList,
     paymentTypeList,
     onSubmit: handleSubmit(onSubmit),

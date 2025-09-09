@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { drawerKeys } from "routes/drawer.routes";
 import type { ModalParam } from "./types";
 
 function useCreateDialog() {
-  const location = useLocation();
-  console.log({ location });
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [openedDialogState, setOpenedDialogState] = useState<ModalParam>();

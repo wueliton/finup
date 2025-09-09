@@ -16,6 +16,7 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
     handleOnClose();
     setSelectedState(date);
     setInpuValueState(format(date, "dd/MM/y"));
+    containerRef.current?.querySelector("input")?.focus();
   }
 
   const handleOnChangeDispatch = useCallback(
