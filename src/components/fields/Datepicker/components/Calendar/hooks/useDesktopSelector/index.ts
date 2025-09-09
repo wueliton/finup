@@ -11,12 +11,11 @@ function useDesktopSelector({
   isOpen,
   onSelect,
 }: UseDesktopSelectorProps) {
-  const { containerRef } = useFocusTrap<HTMLDivElement>(true);
+  const { containerRef } = useFocusTrap<HTMLDivElement>(isOpen);
   const [calendarState, setCalendarState] = useState({
     date: selectedDate ?? new Date(),
     selection: CalendarSelectionEnum.DAY,
     direction: 1,
-    tabIndexDate: selectedDate ?? new Date(),
   });
   const pageLabel = useMemo(() => {
     const selectedType = calendarState.selection;
@@ -41,8 +40,14 @@ function useDesktopSelector({
 
   const handleSelect = useCallback(
     (type: CalendarSelectionEnum) => (date: Date) => {
+      const isDay = type === CalendarSelectionEnum.DAY;
+
+      if (isDay) {
+        onSelect?.(date);
+        return;
+      }
+
       setCalendarState((prev) => {
-        const isDay = type === CalendarSelectionEnum.DAY;
         const isOpen = !isDay;
         const selection = isDay ? prev.selection : prev.selection - 1;
 
@@ -106,28 +111,20 @@ function useDesktopSelector({
     });
   }
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-    const acceptKeys = [
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowRight",
-      "ArrowLeft",
-    ].includes(event.key);
-    const ignoreEvent = !isOpen || !acceptKeys;
-
-    if (ignoreEvent) return;
-
-    console.log({ key: event.key });
+  function handleFocusChange(date: Date) {
+    setCalendarState((prev) => ({
+      ...prev,
+      date,
+    }));
   }
 
   useEffect(() => {
-    if (!isOpen) {
-      setTimeout(() => {
-        setCalendarState((prev) => ({
-          ...prev,
-          date: selectedDate ?? new Date(),
-        }));
-      }, 200);
+    if (isOpen) {
+      setCalendarState((prev) => ({
+        ...prev,
+        selection: CalendarSelectionEnum.DAY,
+        date: selectedDate ?? new Date(),
+      }));
     }
   }, [selectedDate, isOpen]);
 
@@ -143,7 +140,7 @@ function useDesktopSelector({
     handlePageChange,
     handleAddRef,
     handleSelect,
-    handleKeyDown,
+    handleFocusChange,
   };
 }
 

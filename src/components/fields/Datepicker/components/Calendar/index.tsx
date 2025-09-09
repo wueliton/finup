@@ -28,7 +28,7 @@ function DesktopSelector({
     handlePageChange,
     handleAddRef,
     handleSelect,
-    handleKeyDown,
+    handleFocusChange,
   } = useDesktopSelector({
     selectedDate,
     isOpen,
@@ -40,7 +40,6 @@ function DesktopSelector({
       isOpen={isOpen}
       containerRef={containerRef}
       ref={focusTrapRef}
-      onKeyDown={handleKeyDown}
       className="gap-md flex min-w-2xl flex-col"
     >
       <div className="flex items-center justify-between">
@@ -66,7 +65,8 @@ function DesktopSelector({
               selectedDay={selectedDate}
               listMonth={addMonths(calendar.date, page)}
               onSelect={handleSelect(CalendarSelectionEnum.DAY)}
-              nextTabIndexDate={calendar.tabIndexDate}
+              nextTabIndexDate={calendar.date}
+              onFocusChange={handleFocusChange}
             />
           )}
         />

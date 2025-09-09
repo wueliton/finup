@@ -66,6 +66,12 @@ function useFocusTrap<T extends HTMLElement>(isOpen?: boolean) {
     const container = containerRef.current;
     document.addEventListener("keydown", handleKeyDown);
 
+    if (isOpen) {
+      focusTrapManager.add(container);
+    } else {
+      focusTrapManager.remove(container);
+    }
+
     return () => {
       focusTrapManager.remove(container);
       document.removeEventListener("keydown", handleKeyDown);

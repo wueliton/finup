@@ -3,9 +3,10 @@ interface SlideContentProps {
   render: (page: number) => React.JSX.Element;
 }
 
-interface SlideContentHandles {
+type SlideContentHandles = {
   nextPage: () => void;
   previousPage: () => void;
-}
+  element: HTMLDivElement | null;
+};
 
 export type { SlideContentHandles, SlideContentProps };

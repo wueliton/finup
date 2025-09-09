@@ -9,7 +9,7 @@ class FocusTrapManager {
   }
 
   remove(container: HTMLElement | null) {
-    this.containers.filter(
+    this.containers = this.containers.filter(
       (existingContainer) => existingContainer !== container,
     );
   }

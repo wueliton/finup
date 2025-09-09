@@ -64,6 +64,10 @@ function useSlideContent({ onPageChange }: UseSlideContentProps) {
   }
 
   function handleMouseDown(event: ReactMouseEvent) {
+    const ignoreClick = event.button !== 0;
+
+    if (ignoreClick) return;
+
     setIsDraggingState(true);
 
     startMouseDownRef.current = event.clientX;
@@ -106,6 +110,7 @@ function useSlideContent({ onPageChange }: UseSlideContentProps) {
         setPageState((prev) => prev + 1);
         onPageChange?.(-1);
       },
+      element: containerRef.current,
     };
   }
 

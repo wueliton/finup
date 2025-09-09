@@ -8,10 +8,19 @@ import {
   startOfWeek,
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import { KeyboardNavigateKeysEnum } from "../../../../hooks/useDesktopSelector/constants";
+import { daysKeysMap } from "./constants";
 import type { UseDayListProps } from "./types";
 
-function useDayList({ selectedDay, listMonth, onSelect }: UseDayListProps) {
+function useDayList({
+  selectedDay,
+  listMonth,
+  nextTabIndexDate,
+  onSelect,
+  onFocusChange,
+}: UseDayListProps) {
+  const activeDayFocusRef = useRef<HTMLDivElement>(null);
   const { daysList, weekDayNames } = useMemo(() => {
     const firstDayOfMonth = startOfMonth(listMonth);
     const firstWeekDay = startOfWeek(firstDayOfMonth, { weekStartsOn: 0 });
@@ -41,37 +50,59 @@ function useDayList({ selectedDay, listMonth, onSelect }: UseDayListProps) {
   }, [listMonth]);
 
   const isDayOfMonth = useCallback(
-    (day?: Date | null, tabIndexDate?: Date | null) => {
+    (day?: Date | null) => {
       const isSelectedDay = Boolean(
         selectedDay && day && isSameDay(day, selectedDay),
       );
       const isTodayValidation = Boolean(day && isToday(day));
-      const tabIndex =
-        day && isSameDay(day, tabIndexDate ?? new Date()) ? 0 : -1;
+      const isSameMonth = Boolean(
+        day &&
+          day.getMonth() === listMonth.getMonth() &&
+          day.getFullYear() === listMonth.getFullYear(),
+      );
+      const isFocusedElement =
+        isSameMonth &&
+        day &&
+        nextTabIndexDate &&
+        isSameDay(day, nextTabIndexDate);
+      const tabIndex = isFocusedElement ? 0 : -1;
+      const elementRef = isFocusedElement ? activeDayFocusRef : null;
 
       return {
-        isSameMonth: Boolean(
-          day &&
-            day.getMonth() === listMonth.getMonth() &&
-            day.getFullYear() === listMonth.getFullYear(),
-        ),
+        isSameMonth,
         isSelectedDay,
         isToday: isTodayValidation,
         tabIndex,
+        ref: elementRef,
       };
     },
-    [listMonth, selectedDay],
+    [listMonth, selectedDay, nextTabIndexDate],
   );
 
   const handleOnClick = (date: Date) => () => {
     onSelect?.(date);
   };
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    const key = event.key as KeyboardNavigateKeysEnum;
+    const acceptKeys = Object.keys(daysKeysMap).includes(key);
+    const ignoreEvent = !acceptKeys || !nextTabIndexDate;
+
+    if (ignoreEvent) return;
+
+    const changedDate = addDays(nextTabIndexDate, daysKeysMap[key]);
+    onFocusChange?.(changedDate);
+    setTimeout(() => {
+      activeDayFocusRef.current?.focus({ preventScroll: true });
+    }, 1);
+  }
+
   return {
     weekDayNames,
     daysList,
     handleOnClick,
     isDayOfMonth,
+    handleKeyDown,
   };
 }
 

@@ -2,15 +2,27 @@ import useDayList from "./hooks/useDayList";
 import { dayButtonStyle } from "./styles";
 import type { DayListProps } from "./types";
 
-function DayList({ selectedDay, listMonth, onSelect }: DayListProps) {
-  const { weekDayNames, daysList, handleOnClick, isDayOfMonth } = useDayList({
-    selectedDay,
-    listMonth,
-    onSelect,
-  });
+function DayList({
+  selectedDay,
+  listMonth,
+  nextTabIndexDate,
+  onSelect,
+  onFocusChange,
+}: DayListProps) {
+  const { weekDayNames, daysList, handleOnClick, isDayOfMonth, handleKeyDown } =
+    useDayList({
+      selectedDay,
+      listMonth,
+      nextTabIndexDate,
+      onSelect,
+      onFocusChange,
+    });
 
   return (
-    <div className="grid h-full grid-cols-7 text-center">
+    <div
+      className="grid h-full grid-cols-7 text-center"
+      onKeyDown={handleKeyDown}
+    >
       {weekDayNames.map((weekDay, i) => (
         <div className="py-xxs text-sm text-black/40" key={`${weekDay}${i}`}>
           <abbr title={weekDay.fullName}>{weekDay.displayName}</abbr>
@@ -27,6 +39,7 @@ function DayList({ selectedDay, listMonth, onSelect }: DayListProps) {
               aria-label={fullName}
               aria-pressed={dayAttributes.isSelectedDay}
               tabIndex={dayAttributes.tabIndex}
+              ref={dayAttributes.ref}
             >
               {displayName}
             </div>

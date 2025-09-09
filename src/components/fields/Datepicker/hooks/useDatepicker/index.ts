@@ -13,9 +13,9 @@ function useDatepicker({ onChange, onBlur, value }: UseDatepickerProps) {
   const [isMobile, isMobileRef] = useMediaQuery({ maxWidth: 680 });
 
   function handleSelect(date: Date) {
+    handleOnClose();
     setSelectedState(date);
     setInpuValueState(format(date, "dd/MM/y"));
-    handleOnClose();
   }
 
   const handleOnChangeDispatch = useCallback(
