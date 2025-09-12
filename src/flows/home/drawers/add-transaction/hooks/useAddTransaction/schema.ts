@@ -10,10 +10,13 @@ const addTransactionSchema = yup.object({
       name: yup.string().required(),
     })
     .required(),
-  paymentType: yup.object({
-    id: yup.string(),
-    name: yup.string(),
-  }),
+  paymentType: yup
+    .object({
+      id: yup.string().required(),
+      name: yup.string().required(),
+    })
+    .required(),
+  installments: yup.number().required().nullable(),
 });
 
 export { addTransactionSchema };

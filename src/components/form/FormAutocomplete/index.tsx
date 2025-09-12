@@ -19,11 +19,15 @@ function FormAutomcomplete<
       control={internalControl}
       name={name}
       render={({ field, fieldState: { error } }) => {
+        const errorMap = (error ?? {}) as Data;
+        const errorMessage =
+          error?.message ?? Object.values(errorMap)?.at(0)?.message;
+
         return (
           <Autocomplete
             {...autocompleteProps}
             {...field}
-            error={error?.message}
+            error={errorMessage}
           />
         );
       }}

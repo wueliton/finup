@@ -2,7 +2,6 @@ import { Button, Chip } from "@components";
 import Dialog from "components/Dialog";
 import type { DialogComponentProps } from "components/Dialog/hooks/useCreateDialog/types";
 import Autocomplete from "components/fields/Autocomplete";
-import Datepicker from "components/fields/Datepicker";
 import Toggle from "components/fields/Toggle";
 import FormAutomcomplete from "components/form/FormAutocomplete";
 import FormDatepicker from "components/form/FormDatepicker";
@@ -11,15 +10,20 @@ import Icon from "components/Icon";
 import useAddTransaction from "./hooks/useAddTransaction";
 
 function AddTransactionDialog({ onClose }: DialogComponentProps) {
-  const { control, categoryList, paymentTypeList, onSubmit } =
-    useAddTransaction();
+  const {
+    control,
+    categoryList,
+    paymentTypeList,
+    installmentsFrequency,
+    onSubmit,
+  } = useAddTransaction();
 
   return (
     <>
       <Dialog.Header
         icon="GraphNewUp"
-        title="Nova Transação"
-        subtitle="Adicione um novo lançamento"
+        title="Nova Despesa"
+        subtitle="Adicione uma nova Despesa"
       />
       <Dialog.Body>
         <form
@@ -84,16 +88,34 @@ function AddTransactionDialog({ onClose }: DialogComponentProps) {
               </Chip>
             )}
           />
-          <Toggle name="installments">Compra parcelada</Toggle>
+          <Toggle name="installments">Repetir Lançamento</Toggle>
           <div className="gap-sm grid md:grid-cols-2">
             <FormInput
+              control={control}
               name="installments"
               label="Parcelas"
               prefix={<Icon name="Bill" />}
               mask="number"
             />
-            <Datepicker name="payment" label="Data Primeiro pagamento" />
+            <FormAutomcomplete
+              name="installments"
+              label="Frequencia"
+              data={installmentsFrequency}
+              renderOption={(data, props) => (
+                <Autocomplete.Option {...props} key={props.key}>
+                  {data.name}
+                </Autocomplete.Option>
+              )}
+              renderSelectedOption={(option, { onRemove }) => (
+                <Chip onRemove={onRemove} size="sm" canRemove>
+                  {option.name}
+                </Chip>
+              )}
+            />
           </div>
+          <p className="text-xs">
+            Serão lançadas parcelas de <strong>R$ 0,00</strong>.
+          </p>
         </form>
       </Dialog.Body>
       <Dialog.Actions>

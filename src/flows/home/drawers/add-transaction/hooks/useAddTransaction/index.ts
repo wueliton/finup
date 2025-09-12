@@ -16,6 +16,28 @@ function useAddTransaction() {
       name: "Nubank",
     },
   ];
+  const installmentsFrequency = [
+    {
+      id: "234",
+      name: "Meses",
+    },
+    {
+      id: "234566",
+      name: "Anos",
+    },
+    {
+      id: "2343",
+      name: "Semestres",
+    },
+    {
+      id: "65",
+      name: "Bimestres",
+    },
+    {
+      id: "234",
+      name: "Semanas",
+    },
+  ];
 
   function onSubmit(data: unknown) {
     console.log({ data });
@@ -25,6 +47,7 @@ function useAddTransaction() {
     control,
     categoryList,
     paymentTypeList,
+    installmentsFrequency,
     onSubmit: handleSubmit(onSubmit),
   };
 }
