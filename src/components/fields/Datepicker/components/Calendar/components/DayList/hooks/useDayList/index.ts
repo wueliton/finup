@@ -9,17 +9,23 @@ import {
 } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useCallback, useMemo, useRef } from "react";
-import { KeyboardNavigateKeysEnum } from "../../../../hooks/useDesktopSelector/constants";
-import { daysKeysMap } from "./constants";
+import useKeyboardNavigate from "../../../../hooks/useKeyboardNavigate";
 import type { UseDayListProps } from "./types";
 
 function useDayList({
   selectedDay,
   listMonth,
   nextTabIndexDate,
+  disableTabIndex,
   onSelect,
   onFocusChange,
 }: UseDayListProps) {
+  const { handleKeyDown } = useKeyboardNavigate({
+    deltaX: 1,
+    deltaY: 7,
+    onFocusChange: handleFocusChange,
+    onSelect: handleSelect,
+  });
   const activeDayFocusRef = useRef<HTMLDivElement>(null);
   const { daysList, weekDayNames } = useMemo(() => {
     const firstDayOfMonth = startOfMonth(listMonth);
@@ -65,7 +71,7 @@ function useDayList({
         day &&
         nextTabIndexDate &&
         isSameDay(day, nextTabIndexDate);
-      const tabIndex = isFocusedElement ? 0 : -1;
+      const tabIndex = isFocusedElement && !disableTabIndex ? 0 : -1;
       const elementRef = isFocusedElement ? activeDayFocusRef : null;
 
       return {
@@ -76,7 +82,7 @@ function useDayList({
         ref: elementRef,
       };
     },
-    [listMonth, selectedDay, nextTabIndexDate],
+    [listMonth, selectedDay, nextTabIndexDate, disableTabIndex],
   );
 
   const handleOnClick =
@@ -86,29 +92,20 @@ function useDayList({
       onSelect?.(date);
     };
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-    const key = event.key as KeyboardNavigateKeysEnum;
-    const acceptKeys = Object.values(KeyboardNavigateKeysEnum).includes(key);
-    const ignoreEvent = !acceptKeys || !nextTabIndexDate;
-    const selectEvent =
-      key === KeyboardNavigateKeysEnum.SPACE ||
-      key === KeyboardNavigateKeysEnum.ENTER;
+  function handleFocusChange(delta: number) {
+    if (!nextTabIndexDate) return;
 
-    if (ignoreEvent) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (selectEvent) {
-      onSelect?.(nextTabIndexDate);
-      return;
-    }
-
-    const changedDate = addDays(nextTabIndexDate, daysKeysMap[key]);
+    const changedDate = addDays(nextTabIndexDate, delta);
     onFocusChange?.(changedDate);
     setTimeout(() => {
       activeDayFocusRef.current?.focus({ preventScroll: true });
     }, 1);
+  }
+
+  function handleSelect() {
+    if (!nextTabIndexDate) return;
+
+    onSelect?.(nextTabIndexDate);
   }
 
   return {

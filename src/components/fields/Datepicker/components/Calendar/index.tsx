@@ -63,6 +63,7 @@ function DesktopSelector({
           render={(page) => (
             <DayList
               selectedDay={selectedDate}
+              disableTabIndex={showSelectMonthOrYear}
               listMonth={addMonths(calendar.date, page)}
               onSelect={handleSelect(CalendarSelectionEnum.DAY)}
               nextTabIndexDate={calendar.date}
@@ -85,6 +86,9 @@ function DesktopSelector({
                   selectedDate={selectedDate}
                   month={addYears(calendar.date, page)}
                   onSelect={handleSelect(CalendarSelectionEnum.MONTH)}
+                  nextTabIndexDate={calendar.date}
+                  onFocusChange={handleFocusChange}
+                  disableTabIndex={showYearSelection}
                 />
               )}
             />
@@ -103,6 +107,8 @@ function DesktopSelector({
                   year={addYears(calendar.date, 12 * page)}
                   selectedDate={selectedDate}
                   onSelect={handleSelect(CalendarSelectionEnum.YEAR)}
+                  nextTabIndexDate={calendar.date}
+                  onFocusChange={handleFocusChange}
                 />
               )}
             />

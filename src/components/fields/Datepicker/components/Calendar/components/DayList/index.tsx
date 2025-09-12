@@ -6,6 +6,7 @@ function DayList({
   selectedDay,
   listMonth,
   nextTabIndexDate,
+  disableTabIndex,
   onSelect,
   onFocusChange,
 }: DayListProps) {
@@ -14,6 +15,7 @@ function DayList({
       selectedDay,
       listMonth,
       nextTabIndexDate,
+      disableTabIndex,
       onSelect,
       onFocusChange,
     });
